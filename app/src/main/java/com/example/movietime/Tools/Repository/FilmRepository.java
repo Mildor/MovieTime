@@ -1,0 +1,85 @@
+package com.example.movietime.Tools.Repository;
+
+import android.app.Application;
+import android.os.Handler;
+import android.os.Looper;
+
+import androidx.lifecycle.LiveData;
+
+import com.example.movietime.Model.Film;
+import com.example.movietime.Model.FilmGenreCrossRef;
+import com.example.movietime.Model.FilmWithGenre;
+import com.example.movietime.Tools.Dao.FilmDao;
+import com.example.movietime.Tools.FilmRoomDatabase;
+
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class FilmRepository {
+    private FilmDao filmDao;
+    private LiveData<List<Film>> allfilms;
+    private LiveData<Film> selectedFilm;
+    private LiveData<Integer> getLastIdFilm;
+    private Integer filmId;
+    private final LiveData<List<FilmWithGenre>> filmWithGenres;
+
+    public FilmRepository(Application application) {
+        FilmRoomDatabase db = FilmRoomDatabase.getDataBase(application);
+        filmDao = db.filmDao();
+        allfilms = filmDao.getAllFilmLD();
+//        this.filmId = filmId;
+//        selectedFilm = filmDao.getSelectedFilm(filmId);
+//        getLastIdFilm = filmDao.getLastIdFilm();
+        filmWithGenres = filmDao.getFilmsWithGenres();
+    }
+
+    public LiveData<List<Film>> getAllfilms(){ return allfilms;}
+
+    public LiveData<List<FilmWithGenre>> getFilmWithGenres(){ return filmWithGenres;}
+
+    public void insert(Film f){ new InsertThread(filmDao).execute(f);}
+
+    public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeCrossRef(filmGenreCrossRef);}
+
+    public void insertAll(List<Film> f){ new InsertThread(filmDao).executeAll(f);}
+
+    public LiveData<Integer> getLastIdFilm(){ return getLastIdFilm;}
+
+    public LiveData<Film> getSelectedFilm(Integer filmId){ return selectedFilm;}
+
+    private static class InsertThread{
+        private final FilmDao filmDao;
+        ExecutorService executorService;
+        Handler handler;
+
+        public InsertThread(FilmDao f){
+            filmDao = f;
+            executorService = Executors.newSingleThreadExecutor();
+            handler = new Handler(Looper.getMainLooper());
+        }
+
+        public void execute(Film film){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() { filmDao.insert(film);}
+            });
+        }
+
+        public void executeCrossRef(FilmGenreCrossRef filmGenreCrossRef){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() { filmDao.insertCrossRef(filmGenreCrossRef);}
+            });
+        }
+
+        public void executeAll(List<Film> films){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    filmDao.insertAllFilms(films);
+                }
+            });
+        }
+    }
+}

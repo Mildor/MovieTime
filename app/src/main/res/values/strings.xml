@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">MovieTime</string>
+    <string name="ajouter">ajouter</string>
+    <string name="API">API</string>
+    <string name="ajouterGenre">ajouterGenre</string>
+    <string name="ajouterFilm">ajouterFilm</string>
+    <string name="FilmActivity">FilmActivity</string>
+    <string name="choisis_ton_genre">Choisis ton genre</string>
+    <string name="choisis_tes_genre">choisis tes genre</string>
+    <string name="choisis_tes_genres">choisis tes genres</string>
+    <string name="libell">Libellé :</string>
+    <string name="enregister">Enregister</string>
+    <string name="GenreActivity">GenreActivity</string>
+    <string name="titre">Titre :</string>
+    <string name="description">description :</string>
+</resources>
