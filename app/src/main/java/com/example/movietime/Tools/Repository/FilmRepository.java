@@ -30,7 +30,7 @@ public class FilmRepository {
         allfilms = filmDao.getAllFilmLD();
 //        this.filmId = filmId;
 //        selectedFilm = filmDao.getSelectedFilm(filmId);
-//        getLastIdFilm = filmDao.getLastIdFilm();
+        getLastIdFilm = filmDao.getLastIdFilm();
         filmWithGenres = filmDao.getFilmsWithGenres();
     }
 
@@ -40,6 +40,7 @@ public class FilmRepository {
 
     public void insert(Film f){ new InsertThread(filmDao).execute(f);}
 
+    public void update(Film f){ new InsertThread(filmDao).executeUpdate(f);}
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeCrossRef(filmGenreCrossRef);}
 
     public void insertAll(List<Film> f){ new InsertThread(filmDao).executeAll(f);}
@@ -57,6 +58,15 @@ public class FilmRepository {
             filmDao = f;
             executorService = Executors.newSingleThreadExecutor();
             handler = new Handler(Looper.getMainLooper());
+        }
+
+        public void executeUpdate(Film film){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    filmDao.update(film);
+                }
+            });
         }
 
         public void execute(Film film){

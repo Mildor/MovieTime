@@ -1,19 +1,17 @@
 package com.example.movietime.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.room.Embedded;
 import androidx.room.Entity;
-import androidx.room.Junction;
 import androidx.room.PrimaryKey;
-import androidx.room.Relation;
-
-import java.util.List;
 
 @Entity
-public class Film {
+public class Film implements Parcelable {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int filmId;
 
     private String titre;
@@ -28,13 +26,36 @@ public class Film {
     public Film() {
     }
 
-    public Film(int id, String titre, @Nullable String description, String dateDeSortie, Double rating) {
-        this.filmId = id;
+    public Film(String titre, @Nullable String description, String dateDeSortie, Double rating) {
         this.titre = titre;
         this.description = description;
         this.dateDeSortie = dateDeSortie;
         this.rating = rating;
     }
+
+    protected Film(Parcel in) {
+        filmId = in.readInt();
+        titre = in.readString();
+        description = in.readString();
+        dateDeSortie = in.readString();
+        if (in.readByte() == 0) {
+            rating = null;
+        } else {
+            rating = in.readDouble();
+        }
+    }
+
+    public static final Creator<Film> CREATOR = new Creator<Film>() {
+        @Override
+        public Film createFromParcel(Parcel in) {
+            return new Film(in);
+        }
+
+        @Override
+        public Film[] newArray(int size) {
+            return new Film[size];
+        }
+    };
 
     public int getFilmId() {
         return filmId;
@@ -86,5 +107,24 @@ public class Film {
                 ", description='" + description + '\'' +
                 ", dateDeSortie=" + dateDeSortie +
                 ", rating=" + rating;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeInt(filmId);
+        parcel.writeString(titre);
+        parcel.writeString(description);
+        parcel.writeString(dateDeSortie);
+        if (rating == null) {
+            parcel.writeByte((byte) 0);
+        } else {
+            parcel.writeByte((byte) 1);
+            parcel.writeDouble(rating);
+        }
     }
 }

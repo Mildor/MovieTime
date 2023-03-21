@@ -56,7 +56,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> 
         Film film = localData.get(position);
         holder.display(film);
     }
-    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         private TextView fvtitre, fvrating;
         //private Task myTask;
 
@@ -67,6 +67,7 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> 
             fvrating = itemView.findViewById(R.id.fvrating);
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @SuppressLint("SetTextI18n")
@@ -84,6 +85,12 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> 
         @Override
         public void onClick(View view) {
             myListener.onItemClick(getAdapterPosition(), view);
+        }
+
+        @Override
+        public boolean onLongClick(View view) {
+            myListener.onItemLongClick(getAdapterPosition(), view);
+            return false;
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
+import androidx.room.Update;
 
 import com.example.movietime.Model.Film;
 import com.example.movietime.Model.FilmGenreCrossRef;
@@ -16,6 +17,9 @@ import java.util.List;
 public interface FilmDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(Film film);
+
+    @Update
+    void update(Film film);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAllFilms(List<Film> films);

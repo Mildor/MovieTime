@@ -10,7 +10,6 @@ import androidx.room.TypeConverters;
 import com.example.movietime.Model.Film;
 import com.example.movietime.Model.FilmGenreCrossRef;
 import com.example.movietime.Model.Genre;
-import com.example.movietime.Model.GenreWithFilm;
 import com.example.movietime.Tools.Dao.FilmDao;
 import com.example.movietime.Tools.Dao.GenreDao;
 

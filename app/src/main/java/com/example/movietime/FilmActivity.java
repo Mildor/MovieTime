@@ -14,11 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.movietime.Model.Film;
 import com.example.movietime.Model.Genre;
 import com.example.movietime.Tools.ViewModel.GenreViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 public class FilmActivity extends AppCompatActivity {
@@ -36,6 +39,20 @@ public class FilmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ajout_film);
         genreViewModel = new ViewModelProvider(this).get(GenreViewModel.class);
+
+        Intent newIntent = getIntent();
+
+        if (newIntent != null){
+            Film film = newIntent.getParcelableExtra("film");
+            if (film != null ){
+                EditText edtTitre = findViewById(R.id.edtTitre);
+                edtTitre.setText(film.getTitre());
+                EditText edtDesc = findViewById(R.id.edtDescription);
+                edtDesc.setText(film.getDescription());
+            }
+        }
+
+
 
         genreViewModel.getAllGenres().observe(this, new Observer<List<Genre>>() {
             @Override
@@ -140,17 +157,36 @@ public class FilmActivity extends AppCompatActivity {
     }
 
     public void register(View view) {
+        Date currentTime = Calendar.getInstance().getTime();
+        EditText edtTitre = findViewById(R.id.edtTitre);
+        EditText edtDesc = findViewById(R.id.edtDescription);
+        Intent newIntent = getIntent();
         Intent intent = new Intent(view.getContext(), MainActivity.class);
 
-        EditText edtTitre = findViewById(R.id.edtTitre);
-        intent.putExtra("titre", edtTitre.getText().toString());
+        if (newIntent != null){
+            Film film = newIntent.getParcelableExtra("film");
+            if (film != null ){
+                film.setTitre(edtTitre.getText().toString());
+                film.setDescription(edtDesc.getText().toString());
 
-        EditText edtDesc = findViewById(R.id.edtDescription);
-        intent.putExtra("description", edtDesc.getText().toString());
+                intent.putIntegerArrayListExtra("genres", genreIds);
+                intent.putExtra("filmM", film);
 
-        intent.putIntegerArrayListExtra("genres", genreIds);
+                startActivity(intent);
+            }else{
+                Film filmNew = new Film(
+                        edtTitre.getText().toString(),
+                        edtDesc.getText().toString(),
+                        currentTime.toString(),
+                        0.0
+                );
 
-        startActivity(intent);
+                intent.putIntegerArrayListExtra("genres", genreIds);
+                intent.putExtra("filmC", filmNew);
+
+                startActivity(intent);
+            }
+        }
     }
 }
 

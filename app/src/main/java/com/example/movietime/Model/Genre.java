@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Genre {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int genreId;
     private String libelle;
 
@@ -14,8 +14,7 @@ public class Genre {
     public Genre() {
     }
 
-    public Genre(int genreId, String libelle) {
-        this.genreId = genreId;
+    public Genre(String libelle) {
         this.libelle = libelle;
     }
 

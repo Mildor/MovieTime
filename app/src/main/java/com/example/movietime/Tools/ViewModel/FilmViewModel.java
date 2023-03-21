@@ -30,6 +30,8 @@ public class FilmViewModel extends AndroidViewModel {
 
     public void insert(Film film){ filmRepository.insert(film);}
 
+    public void update(Film film){ filmRepository.update(film);}
+
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ filmRepository.insertCrossRef(filmGenreCrossRef);}
 
     public void insertAll(List<Film> films){ filmRepository.insertAll(films);}
