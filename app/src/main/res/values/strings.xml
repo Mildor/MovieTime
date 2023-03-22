@@ -13,4 +13,7 @@
     <string name="GenreActivity">GenreActivity</string>
     <string name="titre">Titre :</string>
     <string name="description">description :</string>
+    <string name="ajoutergenrefilms">AjouterGenreFilms</string>
+    <string name="AddGenreToFilmActivity">AddGenreToFilmActivity</string>
+    <string name="choisis_tes_films">choisis tes films</string>
 </resources>

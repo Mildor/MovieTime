@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:onClick="addFilm"
         android:text="@string/ajouterFilm" />
+
     <Button
         android:id="@+id/buttonAddGenre"
         android:layout_width="match_parent"
@@ -20,11 +21,11 @@
         android:text="@string/ajouterGenre" />
 
     <Button
-        android:id="@+id/assiociate"
+        android:id="@+id/AjouterGenreFilm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="associer"
-        android:text="@string/ajouter" />
+        android:onClick="associerFilmGenre"
+        android:text="@string/ajoutergenrefilms" />
 
     <Button
         android:id="@+id/API"

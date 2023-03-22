@@ -15,14 +15,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietime.Model.Film;
-import com.example.movietime.Model.FilmGenreCrossRef;
 import com.example.movietime.Model.FilmWithGenre;
 import com.example.movietime.Model.Genre;
+import com.example.movietime.Tools.AddGenreToFilmActivity;
 import com.example.movietime.Tools.FilmAdapter;
 import com.example.movietime.Tools.InterfaceMyListener;
 import com.example.movietime.Tools.ViewModel.FilmViewModel;
 import com.example.movietime.Tools.ViewModel.GenreViewModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 public class MainActivity extends AppCompatActivity {
@@ -58,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemLongClick(int position, View view) {
                 Film film = FilmAdapter.getData().get(position);
+                Log.d("filmLongClick", film.toString());
+                List<Genre> listGenres = new ArrayList<>();
                 Intent intent = new Intent(MainActivity.this, FilmActivity.class);
-//                intent.putExtra("FilmTitle", film.getTitre());
-//                intent.putExtra("FilmDesc", film.getDescription());
-//                intent.putExtra("FilmDate", film.getDateDeSortie());
-//                intent.putExtra("FilmRating", film.getRating());
-//                intent.putExtra("FilmId", film.getFilmId());
+                for( FilmWithGenre element : filmWithGenresList){
+                    if (element.film.getFilmId() == film.getFilmId()){
+                        listGenres.addAll(element.genres);
+                    }
+                }
+                intent.putExtra("genres", (Serializable) listGenres);
                 intent.putExtra("film", film);
                 startActivity(intent);
             }
@@ -72,6 +76,12 @@ public class MainActivity extends AppCompatActivity {
         filmViewModel = new ViewModelProvider(this).get(FilmViewModel.class);
         genreViewModel = new ViewModelProvider(this).get(GenreViewModel.class);
 
+        filmViewModel.filmWithGenres().observe(this, new Observer<List<FilmWithGenre>>() {
+            @Override
+            public void onChanged(List<FilmWithGenre> filmWithGenres) {
+                filmWithGenresList = filmWithGenres;
+            }
+        });
         filmViewModel.getAllFilms().observe(this, new Observer<List<Film>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -81,71 +91,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        Intent intent = getIntent();
-//
-
-//
-//        String filmTitre = intent.getStringExtra("titre");
-//        String filmDesc = intent.getStringExtra("description");
-//        int filmId = intent.getIntExtra("filmId", 0);
-//
-//        if( filmTitre != null && filmDesc != null){
-//            if ( filmId != 0){
-//                Date currentTime = Calendar.getInstance().getTime();
-//                for (int i = 0; i < filmAdapter.getItemCount(); i++) {
-//                    if (filmAdapter.getData().get(i).getFilmId() == filmId){
-//                        Log.d("dfsqmfd", String.valueOf(filmId));
-//                        Film film = filmAdapter.getData().get(i);
-//                        film.setTitre(filmTitre);
-//                        film.setDescription(filmDesc);
-//                        filmViewModel.update(film);
-
-//                    }
-//                }
-//
-//            }else{
-//                Date currentTime = Calendar.getInstance().getTime();
-//                Film newFilm = new Film(
-//                        filmTitre,
-//                        filmDesc,
-//                        currentTime.toString(),
-//                        0.0
-//                );
-//                filmViewModel.insert(newFilm);
-//                if (genres != null){
-//                    for (Integer genre : genres) {
-//                        associer(newFilm.getFilmId(), genre);
-//                    }
-//                }
-//            }
-//        }
-
         Intent intent = getIntent();
 
         if( intent != null){
-            ArrayList<Integer> genres = intent.getIntegerArrayListExtra("genres");
-            Film filmNew = intent.getParcelableExtra("filmC");
-            Film filmModify = intent.getParcelableExtra("filmM");
 
-            if (filmNew != null){
-                Log.d("create", filmNew.toString());
-                filmViewModel.insert(filmNew);
-                if (genres != null){
-                    for (Integer genre : genres) {
-                        Log.d("Genres", String.valueOf(genre));
-                        associer(filmNew.getFilmId(), genre);
-                    }
-                }
-            }else if(filmModify != null){
-                Log.d("modify", filmModify.toString());
-                filmViewModel.update(filmModify);
-                if (genres != null){
-                    for (Integer genre : genres) {
-                        Log.d("Genres", String.valueOf(genre));
-                        associer(filmModify.getFilmId(), genre);
-                    }
-                }
-            }
             String libelleGenre = intent.getStringExtra("libelle");
 
             if( libelleGenre != null){
@@ -153,10 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 genreViewModel.insert(newGenre);
             }
         }
-
-
-
-
     }
 
     public void addFilm(View view) {
@@ -172,12 +117,8 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivity(intentGenre);
     }
 
-    public void associer(Integer filmId, Integer genreId) {
-        FilmGenreCrossRef filmGenreCrossRef = new FilmGenreCrossRef();
-        filmGenreCrossRef.filmId = filmId;
-        filmGenreCrossRef.genreId = genreId;
-
-        filmViewModel.insertCrossRef(filmGenreCrossRef);
+    public void associerFilmGenre(View view) {
+        Intent intentGenreFilm = new Intent(MainActivity.this, AddGenreToFilmActivity.class);
+        MainActivity.this.startActivity(intentGenreFilm);
     }
-
 }

@@ -5,7 +5,7 @@ import androidx.room.Entity;
 
 @Entity(primaryKeys = {"filmId", "genreId"})
 public class FilmGenreCrossRef {
-    public int filmId;
+    public long filmId;
     public int genreId;
 
     @NonNull

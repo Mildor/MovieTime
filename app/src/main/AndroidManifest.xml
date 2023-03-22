@@ -28,6 +28,10 @@
             android:name=".GenreActivity"
             android:label="@string/GenreActivity"
             tools:ignore="MissingClass" />
+        <activity
+            android:name=".Tools.AddGenreToFilmActivity"
+            android:label="@string/AddGenreToFilmActivity"
+            tools:ignore="MissingClass" />
     </application>
 
 </manifest>

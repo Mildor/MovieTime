@@ -6,10 +6,8 @@ import android.os.Looper;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.movietime.Model.Film;
 import com.example.movietime.Model.Genre;
 import com.example.movietime.Model.GenreWithFilm;
-import com.example.movietime.Tools.Dao.FilmDao;
 import com.example.movietime.Tools.Dao.GenreDao;
 import com.example.movietime.Tools.FilmRoomDatabase;
 
@@ -59,15 +57,15 @@ public class GenreRepository {
         public void execute(Genre genre){
             executorService.execute(new Runnable() {
                 @Override
-                public void run() { genreDao.insert(genre);}
+                public void run() { genreDao.insert(genre);
+                }
             });
         }
 
         public void executeAll(List<Genre> genres){
             executorService.execute(new Runnable() {
                 @Override
-                public void run() {
-                    genreDao.insertAllGenres(genres);
+                public void run() {genreDao.insertAllGenres(genres);
                 }
             });
         }

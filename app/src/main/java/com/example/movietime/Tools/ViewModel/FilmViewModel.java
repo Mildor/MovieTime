@@ -28,7 +28,7 @@ public class FilmViewModel extends AndroidViewModel {
         LiveData<List<FilmWithGenre>> filmWithGenres = filmRepository.getFilmWithGenres();
     }
 
-    public void insert(Film film){ filmRepository.insert(film);}
+    public long insert(Film film){ return filmRepository.insert(film);}
 
     public void update(Film film){ filmRepository.update(film);}
 

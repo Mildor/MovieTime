@@ -15,19 +15,15 @@ import com.example.movietime.Model.FilmWithGenre;
 import java.util.List;
 @Dao
 public interface FilmDao {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Film film);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insert(Film film);
 
     @Update
     void update(Film film);
-
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert
     void insertAllFilms(List<Film> films);
     @Query("SELECT * from Film ORDER BY titre ASC;")
     LiveData<List<Film>> getAllFilmLD();
-
-//    @Query("SELECT * FROM Film WHERE filmId = :id;")
-//    LiveData<Film> getSelectedFilm(int id);
 
     @Query("SELECT filmId FROM Film ORDER BY filmId DESC LIMIT 1;")
     LiveData<Integer> getLastIdFilm();

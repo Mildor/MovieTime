@@ -12,7 +12,7 @@ import androidx.room.PrimaryKey;
 public class Film implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
-    private int filmId;
+    private Long filmId;
 
     private String titre;
 
@@ -34,7 +34,7 @@ public class Film implements Parcelable {
     }
 
     protected Film(Parcel in) {
-        filmId = in.readInt();
+        filmId = in.readLong();
         titre = in.readString();
         description = in.readString();
         dateDeSortie = in.readString();
@@ -57,11 +57,11 @@ public class Film implements Parcelable {
         }
     };
 
-    public int getFilmId() {
+    public Long getFilmId() {
         return filmId;
     }
 
-    public void setFilmId(int filmId) {
+    public void setFilmId(Long filmId) {
         this.filmId = filmId;
     }
 
@@ -116,7 +116,7 @@ public class Film implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel parcel, int i) {
-        parcel.writeInt(filmId);
+        parcel.writeLong(filmId);
         parcel.writeString(titre);
         parcel.writeString(description);
         parcel.writeString(dateDeSortie);

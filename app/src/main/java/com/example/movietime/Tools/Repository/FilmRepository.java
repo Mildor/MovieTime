@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 
 public class FilmRepository {
     private FilmDao filmDao;
+    private static long id;
     private LiveData<List<Film>> allfilms;
     private LiveData<Film> selectedFilm;
     private LiveData<Integer> getLastIdFilm;
@@ -38,7 +39,7 @@ public class FilmRepository {
 
     public LiveData<List<FilmWithGenre>> getFilmWithGenres(){ return filmWithGenres;}
 
-    public void insert(Film f){ new InsertThread(filmDao).execute(f);}
+    public long insert(Film f){ return new InsertThread(filmDao).execute(f);}
 
     public void update(Film f){ new InsertThread(filmDao).executeUpdate(f);}
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeCrossRef(filmGenreCrossRef);}
@@ -69,17 +70,21 @@ public class FilmRepository {
             });
         }
 
-        public void execute(Film film){
+        public long execute(Film film){
             executorService.execute(new Runnable() {
                 @Override
-                public void run() { filmDao.insert(film);}
+                public void run() {
+                    id = filmDao.insert(film);
+                }
             });
+            return id;
         }
 
         public void executeCrossRef(FilmGenreCrossRef filmGenreCrossRef){
             executorService.execute(new Runnable() {
                 @Override
-                public void run() { filmDao.insertCrossRef(filmGenreCrossRef);}
+                public void run() { filmDao.insertCrossRef(filmGenreCrossRef);
+                }
             });
         }
 
