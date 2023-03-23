@@ -34,6 +34,8 @@ public class FilmViewModel extends AndroidViewModel {
 
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ filmRepository.insertCrossRef(filmGenreCrossRef);}
 
+    public void deleteCrossRef(FilmGenreCrossRef filmGenreCrossRef){ filmRepository.deleteCrossRef(filmGenreCrossRef);}
+
     public void insertAll(List<Film> films){ filmRepository.insertAll(films);}
 
     public LiveData<List<Film>> getAllFilms(){return filmRepository.getAllfilms();}

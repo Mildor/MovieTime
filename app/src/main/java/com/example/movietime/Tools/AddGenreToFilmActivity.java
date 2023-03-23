@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.movietime.MainActivity;
 import com.example.movietime.Model.Film;
 import com.example.movietime.Model.FilmGenreCrossRef;
+import com.example.movietime.Model.FilmWithGenre;
 import com.example.movietime.Model.Genre;
 import com.example.movietime.R;
 import com.example.movietime.Tools.ViewModel.FilmViewModel;
@@ -24,6 +25,7 @@ import com.example.movietime.Tools.ViewModel.GenreViewModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class AddGenreToFilmActivity extends AppCompatActivity {
     private GenreViewModel genreViewModel;
@@ -195,9 +197,34 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
         filmViewModel.insertCrossRef(filmGenreCrossRef);
     }
 
+    public void desassocier(Long filmId, Integer genreId){
+        FilmGenreCrossRef filmGenreCrossRef = new FilmGenreCrossRef();
+        filmGenreCrossRef.filmId = filmId;
+        filmGenreCrossRef.genreId = genreId;
+        Log.d("desassocier", filmGenreCrossRef.toString());
+        filmViewModel.deleteCrossRef(filmGenreCrossRef);
+    }
+
     public void register(View view){
         Log.d("films", filmIds.toString());
         Log.d("genres", genreIds.toString());
+
+        filmViewModel.filmWithGenres().observe(this, new Observer<List<FilmWithGenre>>() {
+            @Override
+            public void onChanged(List<FilmWithGenre> filmWithGenres) {
+                for (Long filmId : filmIds){
+                    for (FilmWithGenre filmWithGenre : filmWithGenres){
+                        if (Objects.equals(filmId, filmWithGenre.film.getFilmId())){
+                            for (Genre genre : filmWithGenre.genres){
+                                if (!genreIds.contains(genre.getGenreId())){
+                                    desassocier(filmId, genre.getGenreId());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
         int lengthFilms = filmIds.size();
         int lengthGenres = genreIds.size();

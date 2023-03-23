@@ -38,16 +38,6 @@
         android:layout_marginBottom="20sp"
         android:text="" />
 
-    <TextView
-        android:id="@+id/genres"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/editbox_background"
-        android:drawablePadding="16dp"
-        android:hint="@string/choisis_tes_genres"
-        android:padding="12dp"
-        app:drawableRightCompat="@android:drawable/arrow_down_float" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"

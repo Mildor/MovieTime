@@ -43,6 +43,7 @@ public class FilmRepository {
 
     public void update(Film f){ new InsertThread(filmDao).executeUpdate(f);}
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeCrossRef(filmGenreCrossRef);}
+    public void deleteCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeDeleteCrossRef(filmGenreCrossRef);}
 
     public void insertAll(List<Film> f){ new InsertThread(filmDao).executeAll(f);}
 
@@ -84,6 +85,15 @@ public class FilmRepository {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() { filmDao.insertCrossRef(filmGenreCrossRef);
+                }
+            });
+        }
+
+        public void executeDeleteCrossRef(FilmGenreCrossRef filmGenreCrossRef){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    filmDao.deleteCrossRef(filmGenreCrossRef);
                 }
             });
         }
