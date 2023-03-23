@@ -36,6 +36,8 @@ public class GenreRepository {
     public LiveData<List<Genre>> getAllGenres(){ return allGenres;}
 
     public void insert(Genre g){ new InsertThread(genreDao).execute(g);}
+    public void delete(Genre g){ new InsertThread(genreDao).executeDelete(g);}
+    public void update(Genre g){ new InsertThread(genreDao).executeUpdate(g);}
 
     public void insertAll(List<Genre> g){ new InsertThread(genreDao).executeAll(g);}
 
@@ -62,10 +64,28 @@ public class GenreRepository {
             });
         }
 
+        public void executeUpdate(Genre genre){
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    genreDao.update(genre);
+                }
+            });
+        }
+
         public void executeAll(List<Genre> genres){
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {genreDao.insertAllGenres(genres);
+                }
+            });
+        }
+
+        public void executeDelete(Genre genre) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    genreDao.delete(genre);
                 }
             });
         }

@@ -1,5 +1,6 @@
 package com.example.movietime.Model;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Entity
 public class Genre implements Serializable {
     @PrimaryKey(autoGenerate = true)
-    private int genreId;
+    private Long genreId;
     private String libelle;
 
     @Ignore
@@ -20,12 +21,12 @@ public class Genre implements Serializable {
         this.libelle = libelle;
     }
 
-    public int getGenreId() {
-        return genreId;
+    public void setGenreId(Long genreId) {
+        this.genreId = genreId;
     }
 
-    public void setGenreId(int genreId) {
-        this.genreId = genreId;
+    public Long getGenreId() {
+        return genreId;
     }
 
     public String getLibelle() {
@@ -36,6 +37,7 @@ public class Genre implements Serializable {
         this.libelle = libelle;
     }
 
+    @NonNull
     @Override
     public String toString(){
         return "Genre:" +

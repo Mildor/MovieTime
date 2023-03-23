@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/buttonAdd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="addFilm"
+        android:text="@string/ajouterFilm" />
+
+    <Button
+        android:id="@+id/AjouterGenreFilm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@string/associer_film_genre"
+        android:text="@string/ajoutergenrefilms" />
+
+    <Button
+        android:id="@+id/retourMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="retourMain"
+        android:text="@string/retour" />
+
+    <TextView
+        android:id="@+id/tvTitre"
+        android:layout_width="match_parent"
+        android:text=""  android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listFilm"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

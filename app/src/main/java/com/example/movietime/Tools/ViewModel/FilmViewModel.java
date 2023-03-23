@@ -29,7 +29,7 @@ public class FilmViewModel extends AndroidViewModel {
     }
 
     public long insert(Film film){ return filmRepository.insert(film);}
-
+    public void delete(Film film){ filmRepository.delete(film);}
     public void update(Film film){ filmRepository.update(film);}
 
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ filmRepository.insertCrossRef(filmGenreCrossRef);}

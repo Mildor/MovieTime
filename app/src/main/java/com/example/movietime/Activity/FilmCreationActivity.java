@@ -1,4 +1,4 @@
-package com.example.movietime;
+package com.example.movietime.Activity;
 
 
 import android.content.Intent;
@@ -13,13 +13,14 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.movietime.Model.Film;
 import com.example.movietime.Model.Genre;
+import com.example.movietime.R;
 import com.example.movietime.Tools.ViewModel.FilmViewModel;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class FilmActivity extends AppCompatActivity {
+public class FilmCreationActivity extends AppCompatActivity {
     private FilmViewModel filmViewModel;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,30 +51,27 @@ public class FilmActivity extends AppCompatActivity {
         Date currentTime = Calendar.getInstance().getTime();
         EditText edtTitre = findViewById(R.id.edtTitre);
         EditText edtDesc = findViewById(R.id.edtDescription);
-        Intent newIntent = getIntent();
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        Intent UpdateIntent = getIntent();
+        Intent intent = new Intent(view.getContext(), FilmActivity.class);
 
         filmViewModel = new ViewModelProvider(this).get(FilmViewModel.class);
 
 
-        if (newIntent != null){
-            Film film = newIntent.getParcelableExtra("film");
+        if (UpdateIntent != null){
+            Film film = UpdateIntent.getParcelableExtra("film");
             if (film != null ){
                 film.setTitre(edtTitre.getText().toString());
                 film.setDescription(edtDesc.getText().toString());
                 filmViewModel.update(film);
-                startActivity(intent);
             }else{
                 Film filmNew = new Film();
                 filmNew.setTitre(edtTitre.getText().toString());
                 filmNew.setDescription(edtDesc.getText().toString());
                 filmNew.setRating(0.0);
                 filmNew.setDateDeSortie(currentTime.toString());
-
                 filmViewModel.insert(filmNew);
-
-                startActivity(intent);
             }
+            startActivity(intent);
         }
     }
 }

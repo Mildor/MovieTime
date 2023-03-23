@@ -9,27 +9,26 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movietime.Model.Film;
+import com.example.movietime.Model.Genre;
 import com.example.movietime.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> {
-    private static List<Film> localData = new ArrayList<>();
+public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.MyViewHolder>  {
+    private static List<Genre> localData = new ArrayList<>();
 
     private static InterfaceMyListener myListener;
 
     public static InterfaceMyListener getMyListener(){ return myListener;}
 
     public void setMyListener(InterfaceMyListener myListener){
-        FilmAdapter.myListener = myListener;
+        GenreAdapter.myListener = myListener;
     }
 
-    public FilmAdapter(List<Film> l) { localData = l;}
+    public GenreAdapter(List<Genre> l) { localData = l;}
 
-    public static List<Film> getData(){ return localData;}
+    public static List<Genre> getData(){ return localData;}
 
     @Override
     public int getItemCount() {
@@ -40,50 +39,40 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> 
         }
     }
 
-    public void storeList(List<Film> filmList){ localData = filmList;}
+    public void storeList(List<Genre> genreList){ localData = genreList;}
 
     @NonNull
     @Override
-    public FilmAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GenreAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.film_layout, parent, false);
+                .inflate(R.layout.genre_layout, parent, false);
 
-        return new MyViewHolder(view);
+        return new GenreAdapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FilmAdapter.MyViewHolder holder, int position) {
-        Film film = localData.get(position);
-        holder.display(film);
+    public void onBindViewHolder(@NonNull GenreAdapter.MyViewHolder holder, int position) {
+        Genre genre = localData.get(position);
+        holder.display(genre);
     }
     static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private TextView fvtitre, fvrating, fvdesc,  fvdate;
+        private final TextView fvtitre, fvid;
         //private Task myTask;
 
 
         private MyViewHolder(View itemView){
             super(itemView);
             fvtitre = itemView.findViewById(R.id.fvtitre);
-            fvrating = itemView.findViewById(R.id.fvrating);
-            fvdate = itemView.findViewById(R.id.fvdateDeSortie);
-            fvdesc = itemView.findViewById(R.id.fvdesc);
+            fvid = itemView.findViewById(R.id.fvid);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
 
         @SuppressLint("SetTextI18n")
-        void display(Film film){
-            fvtitre.setText(film.getTitre());
-            fvdate.setText(film.getDateDeSortie());
-            fvdesc.setText(film.getDescription());
-            Double NoRating = 0.0;
-            if (Objects.equals(film.getRating(), NoRating)){
-                fvrating.setText("Non noté");
-            }else{
-                fvrating.setText(film.getRating().toString());
-            }
-
+        void display(Genre genre){
+            fvtitre.setText(genre.getLibelle());
+            fvid.setText(String.valueOf(genre.getGenreId()));
         }
 
         @Override

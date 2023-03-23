@@ -21,6 +21,9 @@ public interface FilmDao {
 
     @Update
     void update(Film film);
+
+    @Delete
+    void delete(Film film);
     @Insert
     void insertAllFilms(List<Film> films);
     @Query("SELECT * from Film ORDER BY titre ASC;")

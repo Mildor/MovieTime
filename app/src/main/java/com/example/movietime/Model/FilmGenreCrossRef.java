@@ -6,7 +6,7 @@ import androidx.room.Entity;
 @Entity(primaryKeys = {"filmId", "genreId"})
 public class FilmGenreCrossRef {
     public long filmId;
-    public int genreId;
+    public long genreId;
 
     @NonNull
     @Override

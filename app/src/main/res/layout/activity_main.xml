@@ -7,40 +7,21 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="addFilm"
-        android:text="@string/ajouterFilm" />
-
-    <Button
-        android:id="@+id/buttonAddGenre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="addGenre"
-        android:text="@string/ajouterGenre" />
-
-    <Button
-        android:id="@+id/AjouterGenreFilm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="associerFilmGenre"
-        android:text="@string/ajoutergenrefilms" />
-
-    <Button
         android:id="@+id/API"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="findFilm"
-        android:text="@string/API" />
-
-    <TextView
-        android:id="@+id/tvTitre"
+        android:text="@string/ajoutez_les_films_depuis_l_api" />
+    <Button
+        android:id="@+id/allFilms"
         android:layout_width="match_parent"
-        android:text=""  android:layout_height="wrap_content"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:layout_height="wrap_content"
+        android:onClick="displayFilms"
+        android:text="@string/voir_les_films" />
+    <Button
+        android:id="@+id/allGenres"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:onClick="displayGenres"
+        android:text="@string/voir_les_genres" />
 </LinearLayout>

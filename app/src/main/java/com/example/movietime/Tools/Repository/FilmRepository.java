@@ -40,7 +40,7 @@ public class FilmRepository {
     public LiveData<List<FilmWithGenre>> getFilmWithGenres(){ return filmWithGenres;}
 
     public long insert(Film f){ return new InsertThread(filmDao).execute(f);}
-
+    public void delete(Film f){ new InsertThread(filmDao).executeDelete(f);}
     public void update(Film f){ new InsertThread(filmDao).executeUpdate(f);}
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeCrossRef(filmGenreCrossRef);}
     public void deleteCrossRef(FilmGenreCrossRef filmGenreCrossRef){ new InsertThread(filmDao).executeDeleteCrossRef(filmGenreCrossRef);}
@@ -103,6 +103,15 @@ public class FilmRepository {
                 @Override
                 public void run() {
                     filmDao.insertAllFilms(films);
+                }
+            });
+        }
+
+        public void executeDelete(Film film) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    filmDao.delete(film);
                 }
             });
         }

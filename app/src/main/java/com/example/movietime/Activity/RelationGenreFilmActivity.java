@@ -1,4 +1,4 @@
-package com.example.movietime.Tools;
+package com.example.movietime.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class AddGenreToFilmActivity extends AppCompatActivity {
+public class RelationGenreFilmActivity extends AppCompatActivity {
     private GenreViewModel genreViewModel;
     private FilmViewModel filmViewModel;
     TextView textViewGenre;
@@ -36,7 +36,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
     boolean[] selectedFilms;
     ArrayList<Integer> genreList = new ArrayList<>();
     ArrayList<Integer> filmList = new ArrayList<>();
-    ArrayList<Integer> genreIds = new ArrayList<>();
+    ArrayList<Long> genreIds = new ArrayList<>();
     ArrayList<Long> filmIds = new ArrayList<>();
 
     @Override
@@ -63,7 +63,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
                 textViewFilm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddGenreToFilmActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RelationGenreFilmActivity.this);
                         builder.setTitle("Choisis tes genres");
                         builder.setCancelable(false);
 
@@ -122,7 +122,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
             public void onChanged(List<Genre> genres) {
                 int id = 0;
                 String[] genreArray = new String[genres.size()];
-                Integer[] idGenres = new Integer[genres.size()];
+                Long[] idGenres = new Long[genres.size()];
                 for ( Genre element : genres){
                     genreArray[id] = element.getLibelle();
                     idGenres[id] = element.getGenreId();
@@ -134,7 +134,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
                 textViewGenre.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(AddGenreToFilmActivity.this);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(RelationGenreFilmActivity.this);
                         builder.setTitle("Choisis tes genres");
                         builder.setCancelable(false);
 
@@ -189,7 +189,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
         });
     }
 
-    public void associer(Long filmId, Integer genreId) {
+    public void associer(Long filmId, Long genreId) {
         FilmGenreCrossRef filmGenreCrossRef = new FilmGenreCrossRef();
         filmGenreCrossRef.filmId = filmId;
         filmGenreCrossRef.genreId = genreId;
@@ -197,7 +197,7 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
         filmViewModel.insertCrossRef(filmGenreCrossRef);
     }
 
-    public void desassocier(Long filmId, Integer genreId){
+    public void desassocier(Long filmId, Long genreId){
         FilmGenreCrossRef filmGenreCrossRef = new FilmGenreCrossRef();
         filmGenreCrossRef.filmId = filmId;
         filmGenreCrossRef.genreId = genreId;
@@ -230,14 +230,14 @@ public class AddGenreToFilmActivity extends AppCompatActivity {
         int lengthGenres = genreIds.size();
 
         if (lengthFilms <= lengthGenres){
-            for(Integer genreId : genreIds){
+            for(Long genreId : genreIds){
                 for (Long filmId : filmIds){
                     associer(filmId, genreId);
                 }
             }
         }else{
             for(Long filmId : filmIds){
-                for (Integer genreId : genreIds){
+                for (Long genreId : genreIds){
                     associer(filmId, genreId);
                 }
             }

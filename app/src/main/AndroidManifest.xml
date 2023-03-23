@@ -21,16 +21,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FilmActivity"
+            android:name=".Activity.FilmCreationActivity"
             android:label="@string/FilmActivity"
             tools:ignore="MissingClass" />
         <activity
-            android:name=".GenreActivity"
+            android:name=".Activity.GenreCreationActivity"
             android:label="@string/GenreActivity"
             tools:ignore="MissingClass" />
         <activity
-            android:name=".Tools.AddGenreToFilmActivity"
+            android:name=".Activity.RelationGenreFilmActivity"
             android:label="@string/AddGenreToFilmActivity"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name=".Activity.FilmActivity"
+            android:label="@string/FilmActivity"
+            tools:ignore="MissingClass" />
+        <activity
+            android:name=".Activity.GenreActivity"
+            android:label="@string/GenreActivity"
             tools:ignore="MissingClass" />
     </application>
 

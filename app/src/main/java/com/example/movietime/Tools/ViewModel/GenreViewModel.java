@@ -28,6 +28,8 @@ public class GenreViewModel extends AndroidViewModel {
     }
 
     public void insert(Genre genre){genreRepository.insert(genre);}
+    public void delete(Genre genre){ genreRepository.delete(genre);}
+    public void update(Genre genre){genreRepository.update(genre);}
 
     public void insertAll(List<Genre> genres){ genreRepository.insertAll(genres);}
 

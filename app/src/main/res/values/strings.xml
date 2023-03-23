@@ -16,4 +16,10 @@
     <string name="ajoutergenrefilms">AjouterGenreFilms</string>
     <string name="AddGenreToFilmActivity">AddGenreToFilmActivity</string>
     <string name="choisis_tes_films">choisis tes films</string>
+    <string name="voir_les_genres">Voir les Genres</string>
+    <string name="voir_les_films">Voir les films</string>
+    <string name="ajoutez_les_films_depuis_l_api">Ajoutez les films depuis l\'api !</string>
+    <string name="ajouter_un_genre">Ajouter un genre</string>
+    <string name="associer_film_genre">Associer Film Genre</string>
+    <string name="retour">Retour</string>
 </resources>
