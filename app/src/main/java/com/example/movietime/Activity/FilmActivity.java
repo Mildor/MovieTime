@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -64,6 +65,15 @@ public class FilmActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position, View v) {
                 Film film = FilmAdapter.getData().get(position);
+                new AlertDialog.Builder(v.getContext())
+                        .setTitle(film.getTitre())
+                        .setMessage(film.getDescription())
+                        .show();
+            }
+
+            @Override
+            public void onItemLongClick(int position, View view) {
+                Film film = FilmAdapter.getData().get(position);
                 List<Genre> listGenres = new ArrayList<>();
                 Intent intent = new Intent(FilmActivity.this, FilmCreationActivity.class);
                 for( FilmWithGenre element : filmWithGenresList){
@@ -75,13 +85,11 @@ public class FilmActivity extends AppCompatActivity {
                 intent.putExtra("film", film);
                 startActivity(intent);
             }
-
-            @Override
-            public void onItemLongClick(int position, View view) {
-                Film film = FilmAdapter.getData().get(position);
-                filmViewModel.delete(film);
-            }
         });
+    }
+
+    public void deleteFilm(FilmViewModel filmViewModel, Film film){
+        filmViewModel.delete(film);
     }
 
     public void retourMain(View view){

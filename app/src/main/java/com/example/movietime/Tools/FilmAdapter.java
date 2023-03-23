@@ -1,9 +1,11 @@
 package com.example.movietime.Tools;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietime.Model.Film;
 import com.example.movietime.R;
+import com.example.movietime.Tools.ViewModel.FilmViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> {
+public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder>  {
     private static List<Film> localData = new ArrayList<>();
 
     private static InterfaceMyListener myListener;
@@ -56,27 +59,35 @@ public class FilmAdapter extends RecyclerView.Adapter<FilmAdapter.MyViewHolder> 
         Film film = localData.get(position);
         holder.display(film);
     }
-    static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
-        private TextView fvtitre, fvrating, fvdesc,  fvdate;
-        //private Task myTask;
 
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
+        private TextView fvtitre, fvrating, fvdate;
+        private Button deleteButton;
+        private Film film;
+        private FilmViewModel filmViewModel= new FilmViewModel(new Application());
 
         private MyViewHolder(View itemView){
             super(itemView);
             fvtitre = itemView.findViewById(R.id.fvtitre);
             fvrating = itemView.findViewById(R.id.fvrating);
             fvdate = itemView.findViewById(R.id.fvdateDeSortie);
-            fvdesc = itemView.findViewById(R.id.fvdesc);
+            deleteButton = itemView.findViewById(R.id.deleteButton);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
+            itemView.findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Film film = localData.get(getAdapterPosition());
+                    filmViewModel.delete(film);
+                }
+            });
         }
 
         @SuppressLint("SetTextI18n")
         void display(Film film){
             fvtitre.setText(film.getTitre());
             fvdate.setText(film.getDateDeSortie());
-            fvdesc.setText(film.getDescription());
             Double NoRating = 0.0;
             if (Objects.equals(film.getRating(), NoRating)){
                 fvrating.setText("Non noté");

@@ -24,7 +24,7 @@ public interface FilmDao {
 
     @Delete
     void delete(Film film);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAllFilms(List<Film> films);
     @Query("SELECT * from Film ORDER BY titre ASC;")
     LiveData<List<Film>> getAllFilmLD();

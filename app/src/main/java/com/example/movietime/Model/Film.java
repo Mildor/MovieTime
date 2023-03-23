@@ -6,14 +6,14 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(indices = {@Index(value = {"titre"}, unique = true)})
 public class Film implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
     private Long filmId;
-
     private String titre;
 
     @Nullable
