@@ -38,7 +38,7 @@
         app:layout_constraintTop_toTopOf="@+id/resultFilms" />
 
     <Spinner
-        android:id="@+id/genreTrie"
+        android:id="@+id/genre"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/AjouterGenreFilm"

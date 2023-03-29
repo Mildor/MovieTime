@@ -3,7 +3,9 @@ package com.example.movietime.Activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.Spinner;
@@ -36,11 +38,9 @@ public class FilmActivity extends AppCompatActivity {
     private List<Film> filmList = new ArrayList<>();
     private FilmAdapter filmAdapter;
     private List<FilmWithGenre> filmWithGenresList;
-    private SearchView searchView;
-    private Spinner spinner;
-    private SpinnerAdapter spinnerAdapter;
 
-    private ArrayAdapter<CharSequence> adapterSpinner;
+    private List<Genre> genres;
+    private List<Film> trieFilm= new ArrayList<>();
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -56,42 +56,6 @@ public class FilmActivity extends AppCompatActivity {
 
         FilmViewModel filmViewModel = new ViewModelProvider(this).get(FilmViewModel.class);
         GenreViewModel genreViewModel = new ViewModelProvider(this).get(GenreViewModel.class);
-        searchView = findViewById(R.id.searchFilm);
-
-        spinner = findViewById(R.id.genreTrie);
-
-        spinnerAdapter.
-
-        spinner.setAdapter(spinnerAdapter);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                filmViewModel.getSearchedFilm(s).observe(FilmActivity.this, new Observer<List<Film>>() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onChanged(List<Film> filmList) {
-                        filmAdapter.storeList(filmList);
-                        filmAdapter.notifyDataSetChanged();
-                    }
-                });
-                return false;
-            }
-
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                filmViewModel.getSearchedFilm(s).observe(FilmActivity.this, new Observer<List<Film>>() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onChanged(List<Film> filmList) {
-                        filmAdapter.storeList(filmList);
-                        filmAdapter.notifyDataSetChanged();
-                    }
-                });
-                return false;
-            }
-        });
 
         filmViewModel.filmWithGenres().observe(this, new Observer<List<FilmWithGenre>>() {
             @Override
@@ -103,6 +67,7 @@ public class FilmActivity extends AppCompatActivity {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onChanged(List<Film> films) {
+                filmList.addAll(films);
                 filmAdapter.storeList(films);
                 filmAdapter.notifyDataSetChanged();
             }
@@ -110,15 +75,48 @@ public class FilmActivity extends AppCompatActivity {
 
         genreViewModel.getAllGenres().observe(this, new Observer<List<Genre>>() {
             @Override
-            public void onChanged(List<Genre> genres) {
-                ArrayList<CharSequence> libelleGenre = null;
-                for (Genre genre : genres){
-                    libelleGenre.add(genre.getLibelle());
-                }
+            public void onChanged(List<Genre> allGenres) {
+                List<Genre> genresToAdapter = new ArrayList<>();
+                genresToAdapter.add(new Genre(""));
+                genresToAdapter.addAll(allGenres);
+                ArrayAdapter genreAdapter = new ArrayAdapter(FilmActivity.this, R.layout.spinner, genresToAdapter);
 
-                if (libelleGenre!= null){
-                    adapterSpinner = ArrayAdapter.createFromResource(FilmActivity.this, libelleGenre, androidx.appcompat.R.layout.simple);
-                }
+                Spinner genreSpinner = findViewById(R.id.genre);
+
+                genreSpinner.setAdapter(genreAdapter);
+
+                genreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        if (trieFilm != null){
+                            trieFilm.clear();
+                        }
+                        Genre genre = (Genre) parent.getSelectedItem();
+
+                        for (FilmWithGenre filmGenre : filmWithGenresList){
+                            for (Genre genre1 : filmGenre.genres){
+                                if (Objects.equals(genre.getGenreId(), genre1.getGenreId())){
+                                    Log.d("voyonsvoir", filmGenre.film.toString());
+                                    trieFilm.add(filmGenre.film);
+                                }
+                            }
+                        }
+                        if (trieFilm != null && trieFilm.size() != 0){
+                            filmAdapter.storeList(trieFilm);
+                            filmAdapter.notifyDataSetChanged();
+                        }else{
+                            filmAdapter.storeList(filmList);
+                            filmAdapter.notifyDataSetChanged();
+
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
             }
         });
 
@@ -147,6 +145,8 @@ public class FilmActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override

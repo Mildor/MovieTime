@@ -40,9 +40,6 @@ public class Genre implements Serializable {
     @NonNull
     @Override
     public String toString(){
-        return "Genre:" +
-                "id=" + genreId +
-                ", libelle='" + libelle + '\'' +
-                 '}';
+        return libelle;
     }
 }
