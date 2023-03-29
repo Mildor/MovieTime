@@ -14,6 +14,7 @@ import com.example.movietime.Model.FilmGenreCrossRef;
 import com.example.movietime.Model.FilmWithGenre;
 
 import java.util.List;
+
 @Dao
 public interface FilmDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -31,6 +32,9 @@ public interface FilmDao {
 
     @Query("SELECT filmId FROM Film ORDER BY filmId DESC LIMIT 1;")
     LiveData<Integer> getLastIdFilm();
+
+    @Query("SELECT * FROM Film WHERE titre LIKE '%' || :titreSearch || '%'  ORDER BY titre ASC;")
+    LiveData<List<Film>> getSearchFilm(String titreSearch);
 
     @Transaction
     @Query("SELECT * FROM Film")

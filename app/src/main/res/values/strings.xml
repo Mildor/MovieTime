@@ -22,4 +22,6 @@
     <string name="ajouter_un_genre">Ajouter un genre</string>
     <string name="associer_film_genre">Associer Film Genre</string>
     <string name="retour">Retour</string>
+    <string name="app_label">rechercher film</string>
+    <string name="search_hint">recherche</string>
 </resources>

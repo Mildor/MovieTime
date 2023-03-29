@@ -15,22 +15,25 @@ import java.util.List;
 public class FilmViewModel extends AndroidViewModel {
     private final FilmRepository filmRepository;
     private LiveData<List<Film>> allFilms;
+    private LiveData<List<Film>> searchedFilms;
     private LiveData<Integer> lastIdFilm;
     private LiveData<Film> selectedFilm;
     private LiveData<List<FilmWithGenre>> filmWithGenres;
+    private String searchedTitre;
 
     public FilmViewModel(Application app){
         super(app);
         filmRepository = new FilmRepository(app);
         LiveData<List<Film>> allFilms = filmRepository.getAllfilms();
-//        LiveData<Integer> lastIdFilm = filmRepository.getLastIdFilm();
-//        LiveData<Film> selectedFilm = filmRepository.getSelectedFilm(filmId);
+        LiveData<List<Film>> searchedFilms = filmRepository.getSearchedFilm(searchedTitre);
         LiveData<List<FilmWithGenre>> filmWithGenres = filmRepository.getFilmWithGenres();
+
     }
 
     public long insert(Film film){ return filmRepository.insert(film);}
     public void delete(Film film){ filmRepository.delete(film);}
     public void update(Film film){ filmRepository.update(film);}
+    public LiveData<List<Film>> getSearchedFilm(String searchedTitre){ return filmRepository.getSearchedFilm(searchedTitre);}
 
     public void insertCrossRef(FilmGenreCrossRef filmGenreCrossRef){ filmRepository.insertCrossRef(filmGenreCrossRef);}
 
@@ -41,8 +44,6 @@ public class FilmViewModel extends AndroidViewModel {
     public LiveData<List<Film>> getAllFilms(){return filmRepository.getAllfilms();}
 
     public LiveData<Integer> getLastIdFilm(){return filmRepository.getLastIdFilm();}
-
-    public LiveData<Film> getSelectedFilm(Integer filmId){return filmRepository.getSelectedFilm(filmId);}
 
     public LiveData<List<FilmWithGenre>> filmWithGenres(){ return filmRepository.getFilmWithGenres();}
 }

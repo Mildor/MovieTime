@@ -20,22 +20,23 @@ public class FilmRepository {
     private FilmDao filmDao;
     private static long id;
     private LiveData<List<Film>> allfilms;
-    private LiveData<Film> selectedFilm;
+    private LiveData<List<Film>> searchedFilms;
     private LiveData<Integer> getLastIdFilm;
-    private Integer filmId;
     private final LiveData<List<FilmWithGenre>> filmWithGenres;
+    private String searchedTitre;
 
     public FilmRepository(Application application) {
         FilmRoomDatabase db = FilmRoomDatabase.getDataBase(application);
         filmDao = db.filmDao();
         allfilms = filmDao.getAllFilmLD();
-//        this.filmId = filmId;
-//        selectedFilm = filmDao.getSelectedFilm(filmId);
+        searchedFilms = filmDao.getSearchFilm(searchedTitre);
         getLastIdFilm = filmDao.getLastIdFilm();
         filmWithGenres = filmDao.getFilmsWithGenres();
     }
 
     public LiveData<List<Film>> getAllfilms(){ return allfilms;}
+
+    public LiveData<List<Film>> getSearchedFilm(String searchedTitre){return filmDao.getSearchFilm(searchedTitre);}
 
     public LiveData<List<FilmWithGenre>> getFilmWithGenres(){ return filmWithGenres;}
 
@@ -48,8 +49,6 @@ public class FilmRepository {
     public void insertAll(List<Film> f){ new InsertThread(filmDao).executeAll(f);}
 
     public LiveData<Integer> getLastIdFilm(){ return getLastIdFilm;}
-
-    public LiveData<Film> getSelectedFilm(Integer filmId){ return selectedFilm;}
 
     private static class InsertThread{
         private final FilmDao filmDao;

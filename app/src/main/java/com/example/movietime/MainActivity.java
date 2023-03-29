@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.movietime.Activity.FilmActivity;
@@ -31,7 +30,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -44,13 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        filmViewModel = new ViewModelProvider(MainActivity.this).get(FilmViewModel.class);
-        filmViewModel.getAllFilms().observe(this, new Observer<List<Film>>() {
-            @Override
-            public void onChanged(List<Film> films) {
-                filmListB.addAll(films);
-            }
-        });
     }
 
 
@@ -168,26 +159,12 @@ public class MainActivity extends AppCompatActivity {
             JSONObject all_films = list.getJSONObject(i);
 
             String dateString = all_films.getString("release_date");
-            Log.d("fdsqf", filmListB.toString());
-            if (filmListB.size() != 0){
-                for (Film film : filmListB){
-                    if (!Objects.equals(film.getTitre(), all_films.getString("title"))){
-                        filmList.add(new Film(
-                                all_films.getString("title"),
-                                all_films.getString("overview"),
-                                dateString,
-                                all_films.getDouble("vote_average")
-                        ));
-                    }
-                }
-            }else{
-                filmList.add(new Film(
-                        all_films.getString("title"),
-                        all_films.getString("overview"),
-                        dateString,
-                        all_films.getDouble("vote_average")
-                ));
-            }
+            filmList.add(new Film(
+                    all_films.getString("title"),
+                    all_films.getString("overview"),
+                    dateString,
+                    all_films.getDouble("vote_average")
+            ));
         }
     }
 }
